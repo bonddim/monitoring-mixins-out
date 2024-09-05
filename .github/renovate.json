@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "schedule:daily",
+    ":disableDependencyDashboard"
+  ],
+  "automerge": true,
+  "automergeStrategy": "squash",
+  "customManagers": [
+    {
+      "currentValueTemplate": "master",
+      "customType": "regex",
+      "datasourceTemplate": "git-refs",
+      "depNameTemplate": "kubernetes-mixin",
+      "fileMatch": [
+        "(^|/)jsonnetfile\\.json$"
+      ],
+      "matchStrings": [
+        "\\\"version\\\": \\\"(?<currentDigest>\\w+?)\\\"\\n"
+      ],
+      "packageNameTemplate": "https://github.com/kubernetes-monitoring/kubernetes-mixin"
+    }
+  ]
+}
