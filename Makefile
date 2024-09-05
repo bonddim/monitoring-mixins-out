@@ -40,7 +40,7 @@ $(tools):
 
 .PHONY: deps
 deps: $(tools)
-	@jb install
+	@$(JB_BIN) install
 
 .PHONY: clean
 clean:
