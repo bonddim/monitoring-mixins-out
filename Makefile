@@ -1,6 +1,8 @@
 #!/usr/bin/make -f
 OUT_DIR ?= docs
+JB_ARGS ?= install
 
+export GOFLAGS := -mod=mod
 export GOBIN := $(shell pwd)/bin
 JB_BIN := $(GOBIN)/jb
 JSONNET_BIN := $(GOBIN)/jsonnet
@@ -14,15 +16,15 @@ alerts: $(addprefix prometheusAlerts-, $(mixins))
 rules: $(addprefix prometheusRules-, $(mixins))
 
 .DEFAULT_GOAL := all
-all: deps dashboards prom
+all: vendor dashboards prom
 prom: alerts rules
 
-dashboards-%: deps $(tools)
+dashboards-%: vendor $(tools)
 	@echo "Rendering dashboards for $* ..."
 	@$(JSONNET_BIN) -J vendor -cm $(OUT_DIR)/$*/dashboards -e '(import "mixins/$*.libsonnet").grafanaDashboards'
 	@find $(OUT_DIR)/$*/dashboards -type f -name '*.json' -exec $(YQ_BIN) --inplace --indent 2 --prettyPrint -o json {} \;
 
-prometheus%: deps $(tools)
+prometheus%: vendor $(tools)
 	$(eval TYPE := $(word 1,$(subst -, ,$@)))
 	$(eval MIXIN := $(word 2,$(subst -, ,$@)))
 	$(eval TARGET_FILE := $(OUT_DIR)/$(MIXIN)/$(TYPE))
@@ -38,9 +40,9 @@ $(tools):
 	go install github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest
 	go install github.com/mikefarah/yq/v4@latest
 
-.PHONY: deps
-deps: $(tools)
-	@$(JB_BIN) install
+.PHONY: vendor
+vendor: $(tools)
+	@$(JB_BIN) $(JB_ARGS)
 
 .PHONY: clean
 clean:
