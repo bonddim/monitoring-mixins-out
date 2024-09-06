@@ -1,4 +1,3 @@
-jsonnetfile.lock.json
 *.tmp
 bin
 vendor
