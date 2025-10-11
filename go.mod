@@ -1,10 +1,10 @@
 module github.com/bonddim/monitoring-mixin
 
-go 1.23.4
+go 1.25
 
 require (
 	github.com/prometheus/prometheus v0.306.0
-	gopkg.in/yaml.v3 v3.0.1
+	go.yaml.in/yaml/v4 v4.0.0-rc.2
 )
 
 require (
@@ -31,4 +31,5 @@ require (
 	golang.org/x/text v0.26.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
