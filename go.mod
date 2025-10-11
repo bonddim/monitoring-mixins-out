@@ -1,6 +1,6 @@
 module github.com/bonddim/monitoring-mixin
 
-go 1.23.4
+go 1.25
 
 require (
 	github.com/prometheus/prometheus v0.306.0
